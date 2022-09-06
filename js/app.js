@@ -48,7 +48,7 @@ resetBtn.addEventListener('click', init)
 
 
 /*-------------------------------- Functions --------------------------------*/
-
+//big thanks for kimberly who came to help me over the weekend. (my friend's sister, I struggled with the JS portion of this.)
 init()
 
 function init() {
@@ -83,19 +83,39 @@ function handleClick (event) {
   render()
   squares.classList.remove("hidden")
     }
+// I looked up help with a longer version
 
-function render() {
-  message.textContent = message
-  for (let i = 0; i < squares.length; i++) {
-    if(squares[i] === 1) {
-      squares[i].textContent = "X";
-    } else if (squares[i] === -1) {
-      squares[i].textContent = "O"
-    } else if (squares[i] === null) {
-      squares[i].textContent = ""
+//updated following along with ben, because mine was a mess
+// function render() {
+  
+//   for (let i = 0; i < squares.length; i++) {
+//     if(squares[i] === 1) {
+//       squares[i].textContent = "X";
+//     } else if (squares[i] === -1) {
+//       squares[i].textContent = "O"
+//     } else if (squares[i] === null) {
+//       squares[i].textContent = ""
+//     }
+//   }
+// }
+funtion render() {
+  board.forEach((cell, idx) ==> {
+    let cellColor, cellLetter
+    if (cell === 1) {
+      cellColor = 'pink'
+      cellLetter = 'X'
+    } else if (cell === -1) {
+      cellColor = 'gold'
+      cellLetter = 'O'
+    } else if (cell === null) {
+      cellColor = '#FFB6C1'
+      cellLetter = ''
     }
-  }
+    square[idx].textContent = cellLetter
+    square[idx].style.backgroundColor = cellColor
+  })
 }
+//I sought out help from YouTube, our material, class, mdn, stackflow, a big thank you to michelle's sister (my friend), she helped me through my code. but I still can't get my x and o to appear.
 
 function isWinner(){
   winningCombos.forEach((winningCombo) => {
@@ -112,6 +132,6 @@ function isWinner(){
     }
   })
   }
-
+//I definetly had help on this function, I could not configure this to save my life. I did research on the math.abs and with Kimberly (michelle sister) help we put together this function
   render()
 
