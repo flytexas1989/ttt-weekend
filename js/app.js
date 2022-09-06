@@ -33,16 +33,16 @@ let squares, turn, winner, T, turnCount
 
 
 /*------------------------ Cached Element References ------------------------*/
+const square = doucment.querySelectorAll('.square')
+const message = document.getElementById('message')
 
-const message = document.querySelector('#message')
-const squares = document.querySelectorAll('.squares')
 const resetBtn = document.querySelector('#reset')
 
 
 
 /*----------------------------- Event Listeners -----------------------------*/
 
-allSquares.forEach(square => square.addEventListener('click', handleClick )) 
+square.forEach(square => square.addEventListener('click', handleClick )) 
   
 resetBtn.addEventListener('click', init)
 
