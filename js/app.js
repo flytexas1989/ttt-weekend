@@ -23,28 +23,28 @@ const winningCombos = [
   [0, 1, 2],
   [0, 3, 6]
 ]
+const playerX = 1
+const playerO = -1
 
 /*---------------------------- Variables (state) 
 ----------------------------*/
 
-let boardSquares, playerTurn, isWinner
+let squares, turn, winner, T, turnCount
 
 
 /*------------------------ Cached Element References ------------------------*/
 
 const message = document.querySelector('#message')
-const htmlSquares = document.querySelectorAll('.squares')
-const resetBtn = document.querySelector('.reset')
+const squares = document.querySelectorAll('.squares')
+const resetBtn = document.querySelector('#reset')
+
 
 
 /*----------------------------- Event Listeners -----------------------------*/
 
-htmlSquares.forEach(function(squares) {
-  squares.addEventListener('click', handleClick)
-})  
+allSquares.forEach(square => square.addEventListener('click', handleClick )) 
   
 resetBtn.addEventListener('click', init)
-resetBtn.addEventListener('mouseover', changeButton)
 
 
 /*-------------------------------- Functions --------------------------------*/
@@ -52,57 +52,66 @@ resetBtn.addEventListener('mouseover', changeButton)
 init()
 
 function init() {
-  playerTurn = 1
-  boardSquares = [null, null, null, null, null, null, null, null, null]
-  isWinner = null
+  board = [
+    null, null, null, 
+    null, null, null, 
+    null, null, null]
+    turn = 1
+  playerX = 1
+  playerO = -1 
+  winner = null
+  counter = 0
   render()
+  resetBtn.setAttribute("hidden", true)
+  message.textContent = "Tic Tac Toe"
 }
 
-function render() {
-  boardSquares.forEach((cell, idx) => {
-    let cellLetter
-    if (boardSquares[idx] ===1) {
-      cellLetter = 'X'
-    } else if (boardSquares[idx] === -1) {
-      cellLetter = 'O'
-    } else if (boardSquares[idx] === null) {
-      cellLetter = ''
-    }
-    htmlSquares[idx].innerHTML = cellLetter
-  })
-  if (!isWinner) {
-    message.innerText = "Player ${playerTurn === 1 ? 'X' : 'O'}, you're up!"
-  } else if (isWinner === 'T') {
-    message.innerText = "That's a Cat"
-  } else {
-    message.innerText = "Finally! A WINNER, So proud of you ${isWinner === 1 ? 'X' : 'O'}"
-  }
-}
-function handleClick(event) {
-  let squareId =
-  parseInt(event.target.Id.replace('sq', ''))
-  if (boardSquares[squareId] || isWinner) {
+function handleClick (event) {
+  const index = event.target.id.replace('sq', '')
+  if (squares[index] !== null){
     return
   }
-  boardSquares[squareId] = playerTurn
-  playerTurn *= -1
-  isWinner = getWinner()
+  squares[index] = turn
+  if (turn === 1) { 
+    message = "Sailor O, you're up!"
+  } else if (turn === -1) {
+    message = "Sailor X, you're up!"
+  }
+  turn *= -1 
+  turnCount += 1
+  checkWinner()
   render()
-}
-function getWinner() {
-  if (Math.abs(boardSquares[2] + boardSquares[4] + boardSquares[6]) ===  3) return boardSquares[2] 
-  if (Math.abs(boardSquares[6] + boardSquares[7] + boardSquares[8]) ===  3) return boardSquares[6]
-  if (Math.abs(boardSquares[0] + boardSquares[4] + boardSquares[8]) ===  3) return boardSquares[0]
-  if (Math.abs(boardSquares[3] + boardSquares[4] + boardSquares[5]) ===  3) return boardSquares[3]
-  if (Math.abs(boardSquares[2] + boardSquares[5] + boardSquares[8]) ===  3) return boardSquares[2]
-  if (Math.abs(boardSquares[1] + boardSquares[4] + boardSquares[7]) ===  3) return boardSquares[1]
-  if (Math.abs(boardSquares[0] + boardSquares[1] + boardSquares[2]) ===  3) return boardSquares[0]
-  if (Math.abs(boardSquares[0] + boardSquares[3] + boardSquares[6]) ===  3) return boardSquares[0]
+  squares.classList.remove("hidden")
+    }
 
-  if (boardSquares.includes(null)) {
-    return null
-  } else {
-    return 'T'
+function render() {
+  message.textContent = message
+  for (let i = 0; i < squares.length; i++) {
+    if(squares[i] === 1) {
+      squares[i].textContent = "X";
+    } else if (squares[i] === -1) {
+      squares[i].textContent = "O"
+    } else if (squares[i] === null) {
+      squares[i].textContent = ""
+    }
   }
 }
+
+function isWinner(){
+  winningCombos.forEach((winningCombo) => {
+    if(Math.abs(squares[winningCombo[0]] + squares[winningCombo[1]] + squares[winningCombo[2]]) === 3){
+    winner = 1
+    message = "I am Sailor X, I am def...TUXEDO MASK <3 * HE'S SO DREAMY *"
+    } else if(Math.abs(squares[winningCombo[0]] + squares[winningCombo[1]] + squares[winningCombo[2]]) === -3){
+    winner = -1
+    message = "I am Sailor O, defender of Tic Tac Toe. I wright the wrongs of evil, and that means you!"
+    }
+    else if (turnCount === 9){
+    winner = 'T'
+    message = "C'mon we can't let evil win! Let's go again!"
+    }
+  })
+  }
+
+  render()
 
